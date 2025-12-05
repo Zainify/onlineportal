@@ -212,7 +212,7 @@ export default function Home() {
                 icon: <PlayCircle className="w-10 h-10 md:w-12 h-12 text-white" />,
                 title: 'Live Classes',
                 description: 'Join interactive sessions and recorded lectures',
-                link: '/classes',
+                link: '/login',
                 color: 'bg-blue-600',
                 hoverColor: 'hover:bg-blue-700',
                 badge: '500+ Sessions',

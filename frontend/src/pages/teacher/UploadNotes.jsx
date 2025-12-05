@@ -117,7 +117,7 @@ export default function UploadNotes() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white">
+          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white">
             <Upload className="w-6 h-6" />
           </div>
           <div>
@@ -161,8 +161,8 @@ export default function UploadNotes() {
             {/* Basic Information */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h2 className="text-lg font-semibold">Basic Information</h2>
               </div>
@@ -257,7 +257,7 @@ export default function UploadNotes() {
 
               <div
                 className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-colors ${dragActive
-                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                   : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
                   }`}
                 onDragEnter={handleDrag}

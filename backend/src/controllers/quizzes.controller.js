@@ -1,6 +1,7 @@
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { getPagination } from '../utils/pagination.js';
 import { Quiz, Question, Subject, Class, User, QuizAttempt, QuizResult, Notification } from '../models/index.js';
+import { gradeQuiz } from './ai.controller.js';
 
 export const createQuiz = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ export const createQuiz = async (req, res, next) => {
       User: !!User
     });
 
-    const { title, description, duration_minutes, subject_id, class_id, status } = req.body;
+    const { title, description, duration_minutes, subject_id, class_id, status, type } = req.body;
     console.log('createQuiz - Request body:', req.body);
     console.log('createQuiz - User:', req.user);
 
@@ -27,6 +28,7 @@ export const createQuiz = async (req, res, next) => {
       subject_id: subject_id || null,
       class_id: class_id || null,
       status: status || 'draft',
+      type: type || 'MCQ',
       created_by: req.user.id,
     });
 
@@ -147,7 +149,10 @@ export const addQuestion = asyncHandler(async (req, res) => {
   const isOwner = quiz.created_by.toString() === req.user.id;
   if (req.user.role !== 'admin' && !isOwner) return res.status(403).json({ message: 'Forbidden' });
 
-  if (!Array.isArray(options) || options.length < 2) return res.status(400).json({ message: 'Options must be an array of length >= 2' });
+  if (quiz.type === 'MCQ') {
+    if (!Array.isArray(options) || options.length < 2) return res.status(400).json({ message: 'Options must be an array of length >= 2 for MCQ' });
+    if (correct_option_index === undefined || correct_option_index === null) return res.status(400).json({ message: 'Correct option index is required for MCQ' });
+  }
 
   const q = await Question.create({ quiz_id: quiz._id, text, options, correct_option_index, slo_tag, topic, difficulty });
   res.status(201).json(q);
@@ -188,17 +193,62 @@ export const submitAttempt = asyncHandler(async (req, res) => {
   let correctCount = 0;
   const attempt = await QuizAttempt.create({ quiz_id: quiz._id, student_id: req.user.id });
 
-  for (const a of answers || []) {
-    const q = qMap.get(a.question_id);
-    if (!q) continue;
-    const correct = q.correct_option_index === a.selected_option_index;
-    if (correct) correctCount++;
-    await QuizResult.create({
-      attempt_id: attempt._id,
-      question_id: q._id,
-      selected_option_index: a.selected_option_index,
-      correct
-    });
+  if (quiz.type === 'SHORT_ANSWER') {
+    // Prepare data for AI grading
+    // answers: [{ question_id, answer_text }]
+    const questionsForAI = [];
+    for (const a of answers || []) {
+      const q = qMap.get(a.question_id);
+      if (q) {
+        questionsForAI.push({
+          question_id: q._id.toString(),
+          question: q.text,
+          answer: a.answer_text
+        });
+      }
+    }
+
+    console.log('AI Grading - Input data:', JSON.stringify(questionsForAI, null, 2));
+    // Call AI Grading
+    let gradedResults;
+    try {
+      gradedResults = await gradeQuiz(questionsForAI);
+    } catch (err) {
+      console.error('Grading failed:', err);
+      return res.status(500).json({ message: 'AI Grading failed. Please try again.' });
+    }
+
+    correctCount = gradedResults.obtained_marks;
+    console.log('AI Grading - Results:', { correctCount, total: gradedResults.total_marks, questions: gradedResults.questions.length });
+
+    // Save results
+    for (const res of gradedResults.questions) {
+      await QuizResult.create({
+        attempt_id: attempt._id,
+        question_id: res.question_id,
+        correct: res.status === 'correct',
+        student_answer_text: questionsForAI.find(q => q.question_id === res.question_id)?.answer,
+        ai_feedback: {
+          feedback: res.feedback,
+          status: res.status
+        }
+      });
+    }
+
+  } else {
+    // MCQ Logic
+    for (const a of answers || []) {
+      const q = qMap.get(a.question_id);
+      if (!q) continue;
+      const correct = q.correct_option_index === a.selected_option_index;
+      if (correct) correctCount++;
+      await QuizResult.create({
+        attempt_id: attempt._id,
+        question_id: q._id,
+        selected_option_index: a.selected_option_index,
+        correct
+      });
+    }
   }
 
   const total = questions.length || 0;

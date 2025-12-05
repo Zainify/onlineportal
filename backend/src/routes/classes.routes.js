@@ -4,7 +4,10 @@ import { createClass, deleteClass, listClasses, updateClass } from '../controlle
 
 const router = Router();
 
-router.get('/', authenticate, listClasses);
+// Public routes - anyone can view classes
+router.get('/', listClasses);
+
+// Admin routes - require authentication and admin role
 router.post('/', authenticate, authorize(['admin']), createClass);
 router.patch('/:id', authenticate, authorize(['admin']), updateClass);
 router.delete('/:id', authenticate, authorize(['admin']), deleteClass);

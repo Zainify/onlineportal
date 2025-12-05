@@ -90,7 +90,7 @@ export default function ManageQuizzes() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white">
+          <div className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center text-white">
             <Database className="w-6 h-6" />
           </div>
           <div>
@@ -128,8 +128,8 @@ export default function ManageQuizzes() {
         <Card>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <Database className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                <Database className="w-4 h-4 text-orange-600 dark:text-orange-400" />
               </div>
               <h2 className="text-lg font-semibold">Quizzes</h2>
               <span className="text-sm text-gray-500">({filteredItems.length} total)</span>
@@ -144,7 +144,7 @@ export default function ManageQuizzes() {
                   placeholder="Search quizzes..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-purple-500 focus:outline-none transition-colors"
+                  className="pl-10 pr-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-orange-500 focus:outline-none transition-colors"
                 />
               </div>
 
@@ -152,7 +152,7 @@ export default function ManageQuizzes() {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-purple-500 focus:outline-none transition-colors"
+                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-orange-500 focus:outline-none transition-colors"
               >
                 <option value="all">All Status</option>
                 <option value="published">Published</option>

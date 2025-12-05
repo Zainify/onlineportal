@@ -86,3 +86,26 @@ export const approveNote = asyncHandler(async (req, res) => {
   }
   res.json(note);
 });
+
+export const getMyNotes = asyncHandler(async (req, res) => {
+  const { page, limit, offset } = getPagination(req.query);
+  const where = { uploaded_by: req.user.id };
+
+  // Optional filters
+  if (req.query.subject_id) where.subject_id = req.query.subject_id;
+  if (req.query.class_id) where.class_id = req.query.class_id;
+  if (req.query.approved !== undefined) {
+    where.approved = req.query.approved === 'true';
+  }
+
+  const total = await Note.countDocuments(where);
+  const notes = await Note.find(where)
+    .populate('subject_id')
+    .populate('class_id')
+    .populate('chapter_id')
+    .sort({ createdAt: -1 })
+    .skip(offset)
+    .limit(limit);
+
+  res.json({ total, page, limit, data: notes });
+});

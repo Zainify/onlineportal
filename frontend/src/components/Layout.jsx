@@ -119,10 +119,13 @@ export default function Layout() {
           {/* Sidebar Footer */}
           <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex-shrink-0">
             <div className="space-y-2">
-              <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm">
+              <Link
+                to="/settings"
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm"
+              >
                 <Settings className="w-4 h-4" />
                 <span>Settings</span>
-              </button>
+              </Link>
               <button
                 onClick={logout}
                 className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors text-sm"
@@ -300,7 +303,9 @@ function NavLinks({ role }) {
         { title: 'Manage Classes', href: '/admin/manage-classes', icon: <GraduationCap className="w-5 h-5" /> },
         { title: 'Teacher Requests', href: '/admin/teacher-requests', icon: <Shield className="w-5 h-5" /> },
         { title: 'Approve Content', href: '/admin/approve-content', icon: <Shield className="w-5 h-5" /> },
+        { title: 'Manage Books', href: '/admin/manage-books', icon: <BookOpen className="w-5 h-5" /> },
         { title: 'System Overview', href: '/admin/system-overview', icon: <Database className="w-5 h-5" /> }
+
       ]
     }
 

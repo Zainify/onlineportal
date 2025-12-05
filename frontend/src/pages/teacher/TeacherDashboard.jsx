@@ -123,12 +123,21 @@ export default function TeacherDashboard() {
             features: ['PDF support', 'Rich text editor', 'Organize by subject']
           },
           {
+            title: 'My Notes',
+            subtitle: 'View and manage uploaded notes',
+            description: 'Track approval status and manage all your uploaded study materials',
+            icon: <FileText className="w-6 h-6" />,
+            href: '/teacher/my-notes',
+            color: 'from-indigo-500 to-indigo-600',
+            features: ['Approval status', 'View & delete', 'Filter by status']
+          },
+          {
             title: 'Upload Lectures',
             subtitle: 'Add video content or external links',
             description: 'Upload video files or embed YouTube/external links for students',
             icon: <Video className="w-6 h-6" />,
             href: '/teacher/upload-lectures',
-            color: 'from-purple-500 to-purple-600',
+            color: 'from-violet-500 to-violet-600',
             features: ['Video upload', 'YouTube embed', 'External links']
           },
           {
@@ -176,12 +185,12 @@ export default function TeacherDashboard() {
           >
             <Card className="h-full hover:shadow-xl transition-all duration-300 group">
               <div className="flex items-start justify-between mb-4">
-                <div className={`w-12 h-12 ${action.color} rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform`}>
+                <div className={`w-12 h-12 bg-gradient-to-r ${action.color} rounded-xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform`}>
                   {action.icon}
                 </div>
                 <Link
                   to={action.href}
-                  className={`px-3 py-1.5 rounded-lg ${action.color} text-white text-sm font-medium hover:shadow-lg transition-all duration-300 hover:scale-105`}
+                  className={`px-3 py-1.5 rounded-lg bg-gradient-to-r ${action.color} text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105`}
                 >
                   Open
                 </Link>
@@ -221,10 +230,10 @@ export default function TeacherDashboard() {
               recentActivity.map((activity, index) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activity.type === 'notes' ? 'bg-blue-100 text-blue-600' :
-                      activity.type === 'quiz' ? 'bg-green-100 text-green-600' :
-                        activity.type === 'lecture' ? 'bg-purple-100 text-purple-600' :
-                          'bg-orange-100 text-orange-600'
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activity.type === 'notes' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' :
+                      activity.type === 'quiz' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
+                        activity.type === 'lecture' ? 'bg-violet-100 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400' :
+                          'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400'
                       }`}>
                       {
                         activity.type === 'notes' ? <FileText className="w-4 h-4" /> :

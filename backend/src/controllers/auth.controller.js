@@ -83,3 +83,67 @@ export const getSignupRoles = asyncHandler(async (req, res) => {
     res.json(['student', 'teacher', 'admin']);
   }
 });
+
+export const updateProfile = asyncHandler(async (req, res) => {
+  const { name, email } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ message: 'Name and email are required' });
+  }
+
+  // Check if email is already taken by another user
+  const existingUser = await User.findOne({ email, _id: { $ne: req.user.id } });
+  if (existingUser) {
+    return res.status(409).json({ message: 'Email already in use' });
+  }
+
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  user.name = name;
+  user.email = email;
+  await user.save();
+
+  res.json({
+    message: 'Profile updated successfully',
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    }
+  });
+});
+
+export const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  if (!oldPassword || !newPassword) {
+    return res.status(400).json({ message: 'Old password and new password are required' });
+  }
+
+  if (newPassword.length < 6) {
+    return res.status(400).json({ message: 'New password must be at least 6 characters' });
+  }
+
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // Verify old password
+  const isValidPassword = await bcrypt.compare(oldPassword, user.password);
+  if (!isValidPassword) {
+    return res.status(401).json({ message: 'Current password is incorrect' });
+  }
+
+  // Hash and update new password
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  await user.save();
+
+  res.json({ message: 'Password changed successfully' });
+});
+

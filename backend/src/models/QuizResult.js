@@ -12,12 +12,18 @@ const quizResultSchema = new mongoose.Schema({
         required: true
     },
     selected_option_index: {
-        type: Number,
-        required: true
+        type: Number
+        // Not required - only used for MCQ type quizzes
     },
     correct: {
         type: Boolean,
         required: true
+    },
+    student_answer_text: {
+        type: String
+    },
+    ai_feedback: {
+        type: mongoose.Schema.Types.Mixed // Can store JSON object or string
     }
 });
 

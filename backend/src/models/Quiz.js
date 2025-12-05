@@ -31,6 +31,11 @@ const quizSchema = new mongoose.Schema({
         enum: ['draft', 'published'],
         default: 'draft'
     },
+    type: {
+        type: String,
+        enum: ['MCQ', 'SHORT_ANSWER'],
+        default: 'MCQ'
+    },
     deadline: {
         type: Date
     },

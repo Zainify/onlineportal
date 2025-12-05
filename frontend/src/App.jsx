@@ -21,6 +21,7 @@ import CreateQuiz from './pages/teacher/CreateQuiz.jsx'
 import ManageQuizzes from './pages/teacher/ManageQuizzes.jsx'
 import StudentAttempts from './pages/teacher/StudentAttempts.jsx'
 import Analytics from './pages/teacher/Analytics.jsx'
+import MyNotes from './pages/teacher/MyNotes.jsx'
 import ManageUsers from './pages/admin/ManageUsers.jsx'
 import ApproveContent from './pages/admin/ApproveContent.jsx'
 import SystemOverview from './pages/admin/SystemOverview.jsx'
@@ -28,12 +29,15 @@ import ManageSubjects from './pages/admin/ManageSubjects.jsx'
 import ManageChapters from './pages/admin/ManageChapters.jsx'
 import ManageNotes from './pages/admin/ManageNotes.jsx'
 import ManageClasses from './pages/admin/ManageClasses.jsx'
+import ManageBooks from './pages/admin/ManageBooks.jsx'
 import TeacherRequests from './pages/admin/TeacherRequests.jsx'
 import Layout from './components/Layout.jsx'
 import Home from './pages/public/Home.jsx'
 import Books from './pages/public/Books.jsx'
+import BookDetail from './pages/public/BookDetail.jsx'
 import PublicClasses from './pages/public/Classes.jsx'
 import PublicNotes from './pages/public/PublicNotes.jsx'
+import Settings from './pages/Settings.jsx'
 
 function ProtectedRoute({ children, roles }) {
   const { user } = useAuth()
@@ -53,6 +57,7 @@ export default function App() {
           <Route index element={<HomeOrDashboard />} />
           <Route path="books" element={<Books />} />
           <Route path="books/:grade" element={<Books />} />
+          <Route path="books/detail/:bookId" element={<BookDetail />} />
           <Route path="classes" element={<PublicClasses />} />
           <Route path="notes" element={<PublicNotes />} />
           <Route path="notes/:grade" element={<PublicNotes />} />
@@ -77,6 +82,7 @@ export default function App() {
 
           {/* Teacher */}
           <Route path="teacher/upload-notes" element={<ProtectedRoute roles={["teacher", "admin"]}><UploadNotes /></ProtectedRoute>} />
+          <Route path="teacher/my-notes" element={<ProtectedRoute roles={["teacher", "admin"]}><MyNotes /></ProtectedRoute>} />
           <Route path="teacher/upload-lectures" element={<ProtectedRoute roles={["teacher", "admin"]}><UploadLectures /></ProtectedRoute>} />
           <Route path="teacher/create-quiz" element={<ProtectedRoute roles={["teacher", "admin"]}><CreateQuiz /></ProtectedRoute>} />
           <Route path="teacher/manage-quizzes" element={<ProtectedRoute roles={["teacher", "admin"]}><ManageQuizzes /></ProtectedRoute>} />
@@ -92,9 +98,13 @@ export default function App() {
           <Route path="admin/manage-chapters" element={<ProtectedRoute roles={["admin"]}><ManageChapters /></ProtectedRoute>} />
           <Route path="admin/manage-notes" element={<ProtectedRoute roles={["admin"]}><ManageNotes /></ProtectedRoute>} />
           <Route path="admin/manage-classes" element={<ProtectedRoute roles={["admin"]}><ManageClasses /></ProtectedRoute>} />
+          <Route path="admin/manage-books" element={<ProtectedRoute roles={["admin"]}><ManageBooks /></ProtectedRoute>} />
           <Route path="admin/teacher-requests" element={<ProtectedRoute roles={["admin"]}><TeacherRequests /></ProtectedRoute>} />
           <Route path="admin/approve-content" element={<ProtectedRoute roles={["admin"]}><ApproveContent /></ProtectedRoute>} />
           <Route path="admin/system-overview" element={<ProtectedRoute roles={["admin"]}><SystemOverview /></ProtectedRoute>} />
+
+          {/* Settings - Available to all authenticated users */}
+          <Route path="settings" element={<ProtectedRoute roles={["student", "teacher", "parent", "admin"]}><Settings /></ProtectedRoute>} />
         </Route>
       </Routes>
     </AuthProvider>

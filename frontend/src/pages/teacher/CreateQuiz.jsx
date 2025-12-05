@@ -15,6 +15,7 @@ export default function CreateQuiz() {
   const [classId, setClassId] = useState('')
   const [subjectId, setSubjectId] = useState('')
   const [status, setStatus] = useState('draft')
+  const [type, setType] = useState('MCQ')
   const [questions, setQuestions] = useState([])
   const [classes, setClasses] = useState([])
   const [subjects, setSubjects] = useState([])
@@ -87,7 +88,8 @@ export default function CreateQuiz() {
         deadline: deadline || null,
         class_id: classId || null,
         subject_id: subjectId || null,
-        status
+        status,
+        type
       })
 
       for (const q of questions) {
@@ -101,7 +103,7 @@ export default function CreateQuiz() {
       }
 
       setMsg('Quiz created successfully!')
-      setTitle(''); setDescription(''); setDuration(10); setDeadline(''); setClassId(''); setSubjectId(''); setStatus('draft'); setQuestions([])
+      setTitle(''); setDescription(''); setDuration(10); setDeadline(''); setClassId(''); setSubjectId(''); setStatus('draft'); setType('MCQ'); setQuestions([])
     } catch (error) {
       setMsg(error.response?.data?.message || 'Failed to create quiz. Please try again.')
     } finally {
@@ -110,7 +112,7 @@ export default function CreateQuiz() {
   }
 
   const isFormValid = title.trim() && questions.length > 0 && questions.every(q =>
-    q.text.trim() && q.options.filter(opt => opt.trim()).length >= 2
+    q.text.trim() && (type === 'SHORT_ANSWER' || q.options.filter(opt => opt.trim()).length >= 2)
   )
 
   return (
@@ -121,7 +123,7 @@ export default function CreateQuiz() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white">
+          <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white">
             <Edit3 className="w-6 h-6" />
           </div>
           <div>
@@ -159,8 +161,8 @@ export default function CreateQuiz() {
         <Card>
           <div className="space-y-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                <Target className="w-4 h-4 text-green-600 dark:text-green-400" />
               </div>
               <h2 className="text-lg font-semibold">Quiz Details</h2>
             </div>
@@ -182,7 +184,7 @@ export default function CreateQuiz() {
                   value={description}
                   onChange={e => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-purple-500 focus:outline-none transition-colors"
+                  className="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-green-500 focus:outline-none transition-colors"
                 />
               </div>
               <div>
@@ -240,6 +242,19 @@ export default function CreateQuiz() {
                   <option value="published">Published</option>
                 </Select>
               </div>
+              <div>
+                <Select
+                  label="Quiz Type *"
+                  value={type}
+                  onChange={e => {
+                    setType(e.target.value);
+                    setQuestions([]); // Reset questions when type changes
+                  }}
+                >
+                  <option value="MCQ">Multiple Choice</option>
+                  <option value="SHORT_ANSWER">Short Answer (AI Graded)</option>
+                </Select>
+              </div>
             </div>
           </div>
         </Card>
@@ -287,7 +302,7 @@ export default function CreateQuiz() {
             ) : (
               <div className="space-y-4">
                 {questions.map((q, questionIndex) => (
-                  <Card key={questionIndex} className="border-l-4 border-l-purple-500">
+                  <Card key={questionIndex} className="border-l-4 border-l-green-500">
                     <div className="space-y-4">
                       {/* Question Header */}
                       <div className="flex items-center justify-between">
@@ -313,69 +328,71 @@ export default function CreateQuiz() {
                         />
                       </div>
 
-                      {/* Options */}
-                      <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <label className="text-sm font-medium">Answer Options *</label>
-                          <Button
-                            variant="secondary"
-                            size="sm"
-                            onClick={() => addOption(questionIndex)}
-                            className="flex items-center gap-1"
-                          >
-                            <Plus className="w-3 h-3" />
-                            Add Option
-                          </Button>
-                        </div>
+                      {/* Options - Only for MCQ */}
+                      {type === 'MCQ' && (
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <label className="text-sm font-medium">Answer Options *</label>
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={() => addOption(questionIndex)}
+                              className="flex items-center gap-1"
+                            >
+                              <Plus className="w-3 h-3" />
+                              Add Option
+                            </Button>
+                          </div>
 
-                        <div className="space-y-2">
-                          {q.options.map((opt, optionIndex) => (
-                            <div key={optionIndex} className="flex items-center gap-2">
-                              <div className="flex items-center gap-2 flex-1">
-                                <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-medium ${q.correct === optionIndex
-                                  ? 'border-purple-500 bg-purple-500 text-white'
-                                  : 'border-gray-300 dark:border-gray-600'
-                                  }`}>
-                                  {String.fromCharCode(65 + optionIndex)}
+                          <div className="space-y-2">
+                            {q.options.map((opt, optionIndex) => (
+                              <div key={optionIndex} className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 flex-1">
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-medium ${q.correct === optionIndex
+                                    ? 'border-green-500 bg-green-500 text-white'
+                                    : 'border-gray-300 dark:border-gray-600'
+                                    }`}>
+                                    {String.fromCharCode(65 + optionIndex)}
+                                  </div>
+                                  <Input
+                                    placeholder={`Option ${optionIndex + 1}`}
+                                    value={opt}
+                                    onChange={e => updateOption(questionIndex, optionIndex, e.target.value)}
+                                    className="flex-1"
+                                    required
+                                  />
                                 </div>
-                                <Input
-                                  placeholder={`Option ${optionIndex + 1}`}
-                                  value={opt}
-                                  onChange={e => updateOption(questionIndex, optionIndex, e.target.value)}
-                                  className="flex-1"
-                                  required
-                                />
+
+                                {q.options.length > 2 && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeOption(questionIndex, optionIndex)}
+                                    className="text-red-600 hover:text-red-700"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </Button>
+                                )}
                               </div>
-
-                              {q.options.length > 2 && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removeOption(questionIndex, optionIndex)}
-                                  className="text-red-600 hover:text-red-700"
-                                >
-                                  <Trash2 className="w-3 h-3" />
-                                </Button>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Correct Answer Selector */}
-                        <div className="mt-3">
-                          <Select
-                            value={q.correct}
-                            onChange={e => updateQuestion(questionIndex, 'correct', Number(e.target.value))}
-                            label="Correct Answer *"
-                          >
-                            {q.options.map((_, idx) => (
-                              <option key={idx} value={idx}>
-                                {String.fromCharCode(65 + idx)} - {q.options[idx] || 'Option ' + (idx + 1)}
-                              </option>
                             ))}
-                          </Select>
+                          </div>
+
+                          {/* Correct Answer Selector */}
+                          <div className="mt-3">
+                            <Select
+                              value={q.correct}
+                              onChange={e => updateQuestion(questionIndex, 'correct', Number(e.target.value))}
+                              label="Correct Answer *"
+                            >
+                              {q.options.map((_, idx) => (
+                                <option key={idx} value={idx}>
+                                  {String.fromCharCode(65 + idx)} - {q.options[idx] || 'Option ' + (idx + 1)}
+                                </option>
+                              ))}
+                            </Select>
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Additional Fields */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -420,7 +437,7 @@ export default function CreateQuiz() {
               <Button
                 variant="secondary"
                 onClick={() => {
-                  setTitle(''); setDuration(10); setStatus('draft'); setQuestions([])
+                  setTitle(''); setDuration(10); setStatus('draft'); setType('MCQ'); setQuestions([])
                 }}
               >
                 Clear All

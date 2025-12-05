@@ -20,18 +20,23 @@ export const getAttempt = asyncHandler(async (req, res) => {
 
 export const getAttemptDetails = asyncHandler(async (req, res) => {
   const attemptId = req.params.id;
-  const attempt = await QuizAttempt.findById(attemptId);
+  const attempt = await QuizAttempt.findById(attemptId)
+    .populate('quiz_id')
+    .populate('student_id', 'id name email');
 
   if (!attempt) return res.status(404).json({ message: 'Not found' });
 
-  if (req.user.role === 'student' && attempt.student_id.toString() !== req.user.id) {
+  if (req.user.role === 'student' && attempt.student_id._id.toString() !== req.user.id) {
     return res.status(403).json({ message: 'Forbidden' });
   }
 
   const results = await QuizResult.find({ attempt_id: attemptId })
     .populate('question_id');
 
-  res.json(results);
+  res.json({
+    attempt,
+    quiz_results: results
+  });
 });
 
 export const listStudentAttempts = asyncHandler(async (req, res) => {

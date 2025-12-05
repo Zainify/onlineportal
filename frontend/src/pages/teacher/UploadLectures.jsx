@@ -124,7 +124,7 @@ export default function UploadLectures() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white">
+          <div className="w-12 h-12 bg-violet-600 rounded-xl flex items-center justify-center text-white">
             <Video className="w-6 h-6" />
           </div>
           <div>
@@ -167,8 +167,8 @@ export default function UploadLectures() {
           <div className="space-y-8">
             {/* Form Header */}
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <Upload className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              <div className="w-8 h-8 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center">
+                <Upload className="w-4 h-4 text-violet-600 dark:text-violet-400" />
               </div>
               <h2 className="text-lg font-semibold">Create New Lecture</h2>
             </div>
@@ -273,13 +273,13 @@ export default function UploadLectures() {
                 ) : (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <FileVideo className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      <FileVideo className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Video File</span>
                     </div>
 
                     <div
                       className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-colors ${dragActive
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20'
                         : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
                         }`}
                       onDragEnter={handleDrag}
@@ -295,8 +295,8 @@ export default function UploadLectures() {
                       />
 
                       <div className="space-y-4">
-                        <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto">
-                          <Upload className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                        <div className="w-16 h-16 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center mx-auto">
+                          <Upload className="w-8 h-8 text-violet-600 dark:text-violet-400" />
                         </div>
 
                         <div>
@@ -313,7 +313,7 @@ export default function UploadLectures() {
                     {video && (
                       <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                         <div className="flex items-center gap-3">
-                          <FileVideo className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                          <FileVideo className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                           <div>
                             <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{video.name}</p>
                             <p className="text-xs text-gray-500">{(video.size / 1024 / 1024).toFixed(2)} MB</p>

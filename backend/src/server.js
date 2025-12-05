@@ -20,6 +20,7 @@ import subjectsRoutes from './routes/subjects.routes.js';
 import classesRoutes from './routes/classes.routes.js';
 import teacherRequestsRoutes from './routes/teacherRequests.routes.js';
 import aiRoutes from './routes/ai.routes.js';
+import booksRoutes from './routes/books.routes.js';
 import { errorHandler, notFound } from './middlewares/error.js';
 
 dotenv.config();
@@ -70,6 +71,7 @@ app.use('/api/classes', classesRoutes);
 app.use('/api/chapters', chaptersRoutes);
 app.use('/api/teacher-requests', teacherRequestsRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/books', booksRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

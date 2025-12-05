@@ -12,12 +12,12 @@ const questionSchema = new mongoose.Schema({
     },
     options: {
         type: [String],
-        required: true,
-        validate: [arrayLimit, '{PATH} must have at least 2 options']
+        // required: true, // Validation moved to controller/logic based on quiz type
+        // validate: [arrayLimit, '{PATH} must have at least 2 options'] 
     },
     correct_option_index: {
         type: Number,
-        required: true
+        // required: true // Validation moved to controller
     },
     slo_tag: {
         type: String
