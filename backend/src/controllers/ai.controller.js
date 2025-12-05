@@ -33,7 +33,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 // It will automatically read the GEMINI_API_KEY from the
 // environment variable if you don't pass ah
 // n argument.
-const genAI = new GoogleGenAI({ apiKey: "AIzaSyDYpuD6w6l12_4mvVL5vB0OYvQWgToCNAs" });
+const genAI = new GoogleGenAI({ apiKey: "" });
 // If you must pass it explicitly (e.g., in a cloud environment), 
 // use this: const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
