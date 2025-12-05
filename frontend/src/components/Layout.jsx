@@ -278,7 +278,8 @@ function NavLinks({ role }) {
         { title: 'Lectures', href: '/student/lectures', icon: <Video className="w-5 h-5" /> },
         { title: 'Quizzes', href: '/student/quizzes', icon: <Edit3 className="w-5 h-5" /> },
         { title: 'Results', href: '/student/results', icon: <Award className="w-5 h-5" /> },
-        { title: 'Performance', href: '/student/performance', icon: <TrendingUp className="w-5 h-5" /> }
+        { title: 'Performance', href: '/student/performance', icon: <TrendingUp className="w-5 h-5" /> },
+        { title: 'Concept Master AI', href: '/student/ai-tutor', icon: <Bot className="w-5 h-5" /> }
       ],
       teacher: [
         { title: 'Upload Notes', href: '/teacher/upload-notes', icon: <FileText className="w-5 h-5" /> },

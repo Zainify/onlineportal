@@ -14,6 +14,7 @@ import QuizDetail from './pages/student/QuizDetail.jsx'
 import AttemptQuiz from './pages/student/AttemptQuiz.jsx'
 import Results from './pages/student/Results.jsx'
 import Performance from './pages/student/Performance.jsx'
+import ConceptMasterAI from './pages/student/ConceptMasterAI.jsx'
 import UploadNotes from './pages/teacher/UploadNotes.jsx'
 import UploadLectures from './pages/teacher/UploadLectures.jsx'
 import CreateQuiz from './pages/teacher/CreateQuiz.jsx'
@@ -72,6 +73,7 @@ export default function App() {
           <Route path="student/quiz/:id/attempt" element={<ProtectedRoute roles={["student"]}><AttemptQuiz /></ProtectedRoute>} />
           <Route path="student/results" element={<ProtectedRoute roles={["student"]}><Results /></ProtectedRoute>} />
           <Route path="student/performance" element={<ProtectedRoute roles={["student"]}><Performance /></ProtectedRoute>} />
+          <Route path="student/ai-tutor" element={<ProtectedRoute roles={["student"]}><ConceptMasterAI /></ProtectedRoute>} />
 
           {/* Teacher */}
           <Route path="teacher/upload-notes" element={<ProtectedRoute roles={["teacher", "admin"]}><UploadNotes /></ProtectedRoute>} />
